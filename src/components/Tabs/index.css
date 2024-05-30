@@ -1,0 +1,9 @@
+.list-item {
+  margin-right: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.display-style {
+  color: white;
+  font-family: Roboto;
+}

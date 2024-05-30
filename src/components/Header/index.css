@@ -1,0 +1,29 @@
+.header-container {
+  background-color: #2c0e3a;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 120px;
+  padding-right: 130px;
+}
+.logo-sizing {
+  height: 40px;
+}
+.header-text {
+  color: #fec653;
+  font-family: Roboto;
+  font-size: 20px;
+}
+.score-div {
+  display: flex;
+}
+.timer-div {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+}
+.timer-sizing {
+  height: 30px;
+  margin-right: 10px;
+}
