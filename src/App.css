@@ -12,7 +12,7 @@ body {
 }
 
 .app-container {
-  height: 100vh;
+  min-height: 100vh;
   background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-bg.png');
   background-size: cover;
 }
@@ -34,8 +34,15 @@ body {
 }
 .unOrdered-list-tabs {
   display: flex;
+  justify-content: center;
   list-style: none;
   margin-left: 10%;
   margin-right: 10%;
   flex-wrap: wrap;
+  width: 50%;
+}
+.new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

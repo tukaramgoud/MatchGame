@@ -3,6 +3,7 @@ import {Component} from 'react'
 import Header from './components/Header'
 import Tabs from './components/Tabs'
 import TabImages from './components/TabImages'
+import ResultTab from './components/ResultTab'
 // These are the lists used in the application. You can move them to any component needed.
 const tabsList = [
   {tabId: 'FRUIT', displayText: 'Fruits'},
@@ -260,19 +261,30 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    this.counterset()
+    this.timerId = setInterval(this.statusChange, 1000)
   }
 
-  counterset = () => {
-    setInterval(() => {
-      this.setState(pervState => ({
-        count: pervState.count - 1,
-      }))
-    }, 1000)
+  statusChange = () => {
+    const {count} = this.state
+    if (count !== 0) {
+      this.setState(prevState => ({count: prevState.count - 1}))
+    } else {
+      clearInterval(this.timerId)
+      this.setState({resultTab: true})
+    }
   }
 
   TabisChanged = id => {
     this.setState({tabIdIs: id})
+  }
+
+  changeTitle = () => {
+    this.setState({resultTab: false, count: 60, score: 0})
+    this.timerId = setInterval(this.statusChange, 1000)
+  }
+
+  componentWillUnMount = () => {
+    clearInterval(this.timerId())
   }
 
   changeSubImageId = id => {
@@ -282,6 +294,7 @@ class App extends Component {
       this.setState(pervState => ({score: pervState.score + 1}))
     } else {
       this.setState({resultTab: true})
+      clearInterval(this.timerId)
     }
   }
 
@@ -294,7 +307,6 @@ class App extends Component {
     const filterdList = imagesList.filter(
       eachOne => eachOne.category === tabIdIs,
     )
-    console.log(resultTab)
     return (
       <div className="app-container">
         <Header
@@ -302,33 +314,40 @@ class App extends Component {
           scoreIs={score}
           chageCondition={this.changeRule}
         />
-        <div className="display-container">
-          <div>
-            <img
-              src={imagesList[imageId].imageUrl}
-              alt="none"
-              className="images-sizing"
-            />
-          </div>
-          <ul className="unOrdered-list">
-            {tabsList.map(eachOne => (
-              <Tabs
-                tabsItems={eachOne}
-                key={eachOne.tabId}
-                changeTabId={this.TabisChanged}
-              />
-            ))}
-          </ul>
-          <ul className="unOrdered-list-tabs">
-            {filterdList.map(eachOne => (
-              <TabImages
-                imageDetails={eachOne}
-                key={eachOne.id}
-                changeSubImage={this.changeSubImageId}
-              />
-            ))}
-          </ul>
+        <div className="new">
+          {resultTab && (
+            <ResultTab scoreIs={score} changeTitle={this.changeTitle} />
+          )}
         </div>
+        {!resultTab && (
+          <div className="display-container">
+            <div>
+              <img
+                src={imagesList[imageId].imageUrl}
+                alt="none"
+                className="images-sizing"
+              />
+            </div>
+            <ul className="unOrdered-list">
+              {tabsList.map(eachOne => (
+                <Tabs
+                  tabsItems={eachOne}
+                  key={eachOne.tabId}
+                  changeTabId={this.TabisChanged}
+                />
+              ))}
+            </ul>
+            <ul className="unOrdered-list-tabs">
+              {filterdList.map(eachOne => (
+                <TabImages
+                  imageDetails={eachOne}
+                  key={eachOne.id}
+                  changeSubImage={this.changeSubImageId}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     )
   }
